@@ -1,0 +1,7 @@
+[bot]
+name=<your_name_here>
+token=<your_token_here>
+
+[phrases]
+cool_answers="Es muy intersante","Mola mazo!","Qué chulo!","Hala! Yo quiero uno!","Cómo mola!","Tenemos que hacer uno de esos ya!"
+
