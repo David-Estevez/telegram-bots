@@ -29,10 +29,6 @@ def save_log(id, update_id, chat_id, text):
     with open('log.txt', 'a') as f:
         f.write(str((id, update_id, chat_id, text))+'\n')
 
-def process_answers(answers_raw):
-    # Parse comma-separated answers from config file
-    return
-
 def main():
     print '[+] Starting bot...'
 
