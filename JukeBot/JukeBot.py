@@ -64,7 +64,7 @@ def main():
 
     # Create media player controllers:
     player = MediaPlayer()
-    if not player.connect_to_player('vlc'):
+    if not player.connect_to_player():
         print 'Error connecting to player. Exiting...'
         return -1
 
