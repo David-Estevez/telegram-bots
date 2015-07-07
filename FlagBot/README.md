@@ -27,6 +27,14 @@ In order to hold the Arduino board and the servo together, a 3D printable holder
 <img src="doc/Holder.png" width="70%">
 </p>  
 
+This is the final result:
+<p align="center">
+<img src="doc/Assembly.jpg" width="70%">
+</p>  
+
+<p align="center">
+<img src="doc/Assembly-2.jpg" width="70%">
+</p>  
 ## Configuration ##
 For the bot to work properly, the configuration file provided has to be modified with your bot's token and user
 id.
