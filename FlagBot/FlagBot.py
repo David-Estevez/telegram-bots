@@ -7,6 +7,7 @@
 import ConfigParser
 import os
 import re, string
+import time as t
 from twx.botapi import TelegramBot, ReplyKeyboardMarkup
 
 from SerialInterface import SerialInterface
@@ -32,9 +33,9 @@ def save_log(id, update_id, chat_id, text):
 
 ### JukeBot things #######################################
 def send_keyboard(bot, user_id):
-    keyboard_layout = [['Move'], ['Stop'] ]
+    keyboard_layout = [['/flag up'], ['/flag down'] ]
     reply_markup = ReplyKeyboardMarkup.create(keyboard_layout)
-    bot.send_message(user_id, 'This is FlagBot!\nWelcome, user', reply_markup=reply_markup)
+    bot.send_message(user_id, 'This is the almighty FlagBot!\nWelcome, mortal', reply_markup=reply_markup)
 
 def main():
     print '[+] Starting bot...'
@@ -67,7 +68,7 @@ def main():
     interface.connect("/dev/ttyUSB0", 9600)
 
     # Send special keyboard:
-    # send_keyboard(bot, user_id)
+    send_keyboard(bot, user_id)
 
     while True:
         try:
@@ -94,6 +95,17 @@ def main():
                             # Process commands:
                             if word == '/start':
                                 print "New user started the app: " + str(user)
+                                send_keyboard(bot, user_id)
+                            elif word == '/flag':
+                                if words[i+1] == 'up':
+                                    interface.sendMove(90)
+                                    break
+                                elif words[i+1] == 'down':
+                                    interface.sendMove(0)
+                                    break
+                                else:
+                                    bot.send_message(chat_id, "Bad syntax!")
+                                    break
 
                             # Restricted API
                             if int(user_id) == user.id:
