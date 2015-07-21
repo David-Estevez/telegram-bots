@@ -17,7 +17,7 @@ id.
 
 To get a token check out the Official Telegram Bot API [documentation](https://core.telegram.org/bots/api).
 
-To get the user id, open a chat with PronterBot and issue the command /start . After that, your id will appear on the
+To get the user id, open a chat with OuijaBot and issue the command /start . After that, your id will appear on the
 bot stdout.
 
 ## Usage ##
