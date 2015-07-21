@@ -9,8 +9,7 @@ import os
 import re, string
 from twx.botapi import *
 
-import xmlrpclib
-
+from OuijaController import OuijaController
 
 __author__ = 'def'
 
@@ -47,6 +46,12 @@ def main():
     except ConfigParser.NoOptionError, ConfigParser.NoSectionError:
         print '[-] ATTENTION: No allowed user specified. Send a /start command to the bot and set the corresponding id in the users/allowed key at the config file.'
         user_id = None
+
+    port = config.get('ouija', 'port')
+    baudrate = config.get('ouija', 'baudrate')
+    magnet1_pin = int(config.get('ouija', 'magnet1'))
+    magnet2_pin = int(config.get('ouija', 'magnet2'))
+
     # Last mssg id:
     last_id = int(load_last_id())
     print '[+] Last id: %d' % last_id
@@ -60,6 +65,11 @@ def main():
     bot.update_bot_info().wait()
     print '\tBot connected! Bot name: %s' % bot.username
 
+    # Create OuijaController
+    print '[+] Creating OuijaController...'
+    ouija = OuijaController(port, baudrate, magnet1_pin, magnet2_pin)
+    ouija.connect()
+
     while True:
         try:
             updates = bot.get_updates(offset=last_id).wait()
@@ -72,20 +82,31 @@ def main():
                 chat_id = update.message.chat.id
                 text = update.message.text
 
-                if int(update_id) > last_id:
+                if text and int(update_id) > last_id:
                     last_id = update_id
                     save_last_id(last_id)
                     save_log(id, update_id, chat_id, text)
 
                     #text = regex.sub('', text)
+                    print '[+] Received: ' + text
                     words = text.split()
 
                     for i, word in enumerate(words):
                         # Process commands:
                         if word == '/start':
                             print "New user started the app: " + str(user)
-                        elif user == user_id and (word == '/say' or '/say@'+bot_name):
-                            print 'Bot said: \"'' + ' '.join(words[i:]) + '\"'
+                        elif user.id == int(user_id) and (word == '/say' or word == '/say@'+bot.username):
+                            print 'Bot said: \"' + ' '.join(words[i+1:]) + '\"'
+                            ouija.say(' '.join(words[i+1:]).lower())
+                            break
+                        elif user.id == int(user_id) and (word == '/yes' or word == '/yes@'+bot.username):
+                            print 'Bot said "yes"'
+                            ouija.go_to('yes')
+                            break
+                        elif user.id == int(user_id) and (word == '/no' or word == '/no@'+bot_name):
+                            print 'Bot said "no"'
+                            ouija.go_to('no')
+                            break
 
 
         except (KeyboardInterrupt, SystemExit):
