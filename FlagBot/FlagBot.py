@@ -95,7 +95,7 @@ def main():
                             # Process commands:
                             if word == '/start':
                                 print "New user started the app: " + str(user)
-                                send_keyboard(bot, user_id)
+                                send_keyboard(bot, chat_id)
                             elif word == '/flag':
                                 if words[i+1] == 'up':
                                     interface.sendMove(90)
