@@ -25,12 +25,22 @@ class OuijaController:
         time.sleep(2)
         if self.magic_table.online:
             print '[OuijaController] Connected!'
-            return True
         else:
             raise Exception('Could not connect to device! (Port: %s, Baudrate: %s)' % (self.port, self.baudrate))
 
         # Homing
+        print '[OuijaController] Homing...'
         self.magic_table.send("G28 Y0\nG28 X0\n")
+
+        return True
+
+    def disconnect(self):
+        self.magic_table.disconnect()
+        if not self.magic_table.online:
+            print '[OuijaController] Disonnected!'
+            return True
+        else:
+            raise Exception('Could not disconnect the device!')
 
     def go_to(self, token):
         try:
@@ -62,7 +72,9 @@ class OuijaController:
 
 
 if __name__ == '__main__':
-    ouija = OuijaController('','')
+    ouija = OuijaController('/dev/ttyACM0','115200', 4, 5)
+    ouija.connect()
     ouija.go_to('a')
+    ouija.disconnect()
 
 
